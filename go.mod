@@ -1,4 +1,4 @@
-module github.com/davidmartos96/go-flutter-plugin-sqlite
+module github.com/fusion44/go-flutter-plugin-sqlite
 
 go 1.12
 

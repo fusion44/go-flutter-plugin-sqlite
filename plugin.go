@@ -215,9 +215,6 @@ func (p *SqflitePlugin) handleOpenDatabase(arguments interface{}) (reply interfa
 		return nil, errors.New("invalid dbpath")
 	}
 	log.Println("dbpath=", dbpath)
-	if readOnly {
-		log.Printf(errorFormat, "readonly not supported")
-	}
 	if MEMORY_DATABASE_PATH != dbpath {
 		err = os.MkdirAll(filepath.Dir(dbpath), os.ModePerm)
 		if err != nil {
@@ -234,6 +231,10 @@ func (p *SqflitePlugin) handleOpenDatabase(arguments interface{}) (reply interfa
 		}
 	}
 	var engine *sql.DB
+	if readOnly {
+		log.Printf(errorFormat, "Open in read only mode")
+		dbpath = dbpath + "?cache=shared&mode=rwc"
+	}
 	engine, err = sql.Open("sqlite3", dbpath)
 	if err != nil {
 		return makeError(err)
